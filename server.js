@@ -1,11 +1,11 @@
 // import { Express } from "express";
 // import { dotenv } from "dotenv";
-const express = require("express");
-const dotenv = require("dotenv");
+import express from "express";
+import { config } from "dotenv";
 
 // Load env (environment) vars
 // We take them from config.env in our config folder
-dotenv.config({ path: "./config/config.env" });
+config({ path: "./config/config.env" });
 
 const app = express();
 
