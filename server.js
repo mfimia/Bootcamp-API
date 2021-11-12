@@ -1,6 +1,7 @@
-import  express  from "express";
+import express from "express";
 import { config } from "dotenv";
 import bootcamps from "./routes/bootcamps.js";
+import logger from "./middleware/logger.js";
 // import { restart } from "nodemon";
 // Routes files
 // const bootcamps = require("./routes/bootcamps");
@@ -10,6 +11,8 @@ import bootcamps from "./routes/bootcamps.js";
 config({ path: "./config/config.env" });
 
 const app = express();
+
+app.use(logger);
 
 // Mount routers
 // When we declare this, we don't need to use the complete url in the bootcamp file, we can put only '/'
