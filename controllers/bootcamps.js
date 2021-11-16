@@ -1,13 +1,12 @@
 // Creating all methods in this file
 // Describing the methods in comments is a best practice (3 comments above)
+import Bootcamp from "../models/Bootcamp.js";
 
 // @desc    Get all bootcamps
 // @route   GET /api/v1/bootcamps
 // @access  Public
 export const getBootcamps = (req, res, next) => {
-  res
-    .status(200)
-    .json({ success: true, msg: "Show all bootcamps" });
+  res.status(200).json({ success: true, msg: "Show all bootcamps" });
 };
 
 // @desc    Get single bootcamp
@@ -23,6 +22,7 @@ export const getBootcamp = (req, res, next) => {
 // @route   POST /api/v1/bootcamps
 // @access  Private
 export const createBootcamp = (req, res, next) => {
+  console.log(req.body);
   res.status(200).json({ success: true, msg: "Create new bootcamp" });
 };
 
