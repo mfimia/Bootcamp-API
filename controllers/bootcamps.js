@@ -10,7 +10,7 @@ export const getBootcamps = async (req, res, next) => {
   try {
     // When the request is successful, we find all the bootcamps and return them with 200 status
     const bootcamps = await Bootcamp.find();
-    res.status(200).json({ success: true, data: bootcamps });
+    res.status(200).json({ success: true, count: bootcamps.length, data: bootcamps });
   } catch (err) {}
   res.status(400).json({ success: false });
 };
@@ -55,25 +55,38 @@ export const createBootcamp = async (req, res, next) => {
 // @access  Private
 export const updateBootcamp = async (req, res, next) => {
   // Find and update (third parameter is an object with settings)
-  const bootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  try {
+    const bootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
-  // If the bootcamp doesn't exist, we send a 400 response
-  if (!bootcamp) {
-    return res.status(400).json({ success: false });
+    // If the bootcamp doesn't exist, we send a 400 response
+    if (!bootcamp) {
+      return res.status(400).json({ success: false });
+    }
+    console.log(bootcamp);
+    // If the bootcamp does exist, we send a 200 response with the updated data
+    res.status(200).json({ success: true, data: bootcamp });
+  } catch (err) {
+    res.status(400).json({ success: false });
   }
-  console.log(bootcamp);
-  // If the bootcamp does exist, we send a 200 response with the updated data
-  res.status(200).json({ success: true, data: bootcamp });
 };
 
 // @desc    Delete bootcamp
 // @route   DELETE /api/v1/bootcamps/:id
 // @access  Private
 export const deleteBootcamp = async (req, res, next) => {
-  res
-    .status(200)
-    .json({ success: true, msg: `Delete bootcamp ${req.params.id}` });
+  try {
+    const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
+
+    // If the bootcamp doesn't exist, we send a 400 response
+    if (!bootcamp) {
+      return res.status(400).json({ success: false });
+    }
+    // If the bootcamp does exist, we send a 200 response with the updated data
+    res.status(200).json({ success: true, data: {} });
+  } catch (err) {
+    res.status(400).json({ success: false });
+  }
 };
