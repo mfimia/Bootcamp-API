@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// This file is basically saying  what type of data is allowed and how
 const BootcampSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -14,11 +15,13 @@ const BootcampSchema = new mongoose.Schema({
     required: [true, "Please add description"],
     maxLength: [500, "Description can not be more than 50 characters"],
   },
-  website: String,
-  match: [
-    "/https?://(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)",
-    "Please use a valid URL with HTTP or HTTPS",
-  ],
+  website: {
+    type: String,
+    match: [
+      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
+      "Please use a valid URL with HTTP or HTTPS",
+    ],
+  },
   phone: {
     type: String,
     maxlength: [20, "Phone number can not be longer than 20 characters"],
@@ -52,6 +55,19 @@ const BootcampSchema = new mongoose.Schema({
     state: String,
     zipcode: String,
     country: String,
+  },
+  careers: {
+    // Array of strings
+    type: [String],
+    required: true,
+    enum: [
+      "Web Development",
+      "Mobile Development",
+      "UI/UX",
+      "Data Science",
+      "Business",
+      "Other",
+    ],
   },
   averageRating: {
     type: Number,
