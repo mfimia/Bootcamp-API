@@ -21,6 +21,10 @@ import bootcamps from "./routes/bootcamps.js";
 
 const app = express();
 
+// Body parser
+// This method takes the info from the request and parses it from JSON
+app.use(express.json());
+
 // Deprecated middleware custom logger function
 // app.use(logger);
 
@@ -43,10 +47,10 @@ const server = app.listen(
   )
 );
 
-// ----CURRENTLY BEING HANDLED ON TRYCATCH BLOCK
+
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {
-  console.log(`Error: ${err.message}`);
+  console.log(`Error: ${err.message}`.red);
   // Close server & exit process
   server.close(() => process.exit(1));
 });
