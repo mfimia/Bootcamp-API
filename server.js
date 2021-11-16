@@ -1,17 +1,23 @@
 import express from "express";
 import { config } from "dotenv";
-import bootcamps from "./routes/bootcamps.js";
 // Deprecated custom logger function
 import logger from "./middleware/logger.js";
 // Lightweight middleware application installed
 import morgan from "morgan";
-// import { restart } from "nodemon";
-// Routes files
-// const bootcamps = require("./routes/bootcamps");
-
 // Load env (environment) vars
 // We take them from config.env in our config folder
 config({ path: "./config/config.env" });
+// Importing the connection to the database
+import connectDB from "./config/db.js";
+
+// Actually connecting to the database by calling connectDB function (imported)
+connectDB();
+// import { restart } from "nodemon";
+// const bootcamps = require("./routes/bootcamps");
+
+
+// Route files
+import bootcamps from "./routes/bootcamps.js";
 
 const app = express();
 
