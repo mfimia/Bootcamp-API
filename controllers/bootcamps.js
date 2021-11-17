@@ -2,6 +2,7 @@
 // Describing the methods in comments is a best practice (3 comments above)
 import restart from "nodemon";
 import Bootcamp from "../models/Bootcamp.js";
+import ErrorResponse from "../utils/errorResponse.js";
 
 // @desc    Get all bootcamps
 // @route   GET /api/v1/bootcamps
@@ -27,12 +28,19 @@ export const getBootcamp = async (req, res, next) => {
     // Adding extra logic to leave out IDs that are syntactically correct but they don't correspond to any bootcamp
     if (!bootcamp) {
       // Adding return keyworkd to make sure function stops here
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(
+          `Bootcamp not found with id of ${req.params.id}`,
+          404
+        )
+      );
     }
     res.status(200).json({ success: true, data: bootcamp });
   } catch (err) {
     // res.status(400).json({ success: false });
-    next(err);
+    next(
+      new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
+    );
   }
 };
 
