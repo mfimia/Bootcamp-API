@@ -5,7 +5,7 @@ const errorHandler = (err, req, res, next) => {
   error.message = err.message;
 
   // Log to console for dev
-  console.log(err.stack.red);
+  console.log(err.name);
 
   //   Mongoose bad ObjectId
   if (err.name === "CastError") {
@@ -13,6 +13,19 @@ const errorHandler = (err, req, res, next) => {
     error = new ErrorResponse(message, 404);
   }
 
+  //   Mongoose duplicate key
+  if (err.code === 11000) {
+    const message = "Duplicate field value entered";
+    error = new ErrorResponse(message, 400);
+  }
+
+  //   Mongoose validation error
+  if (err.name === "ValidationError") {
+    const message = Object.values(err.errors).map((value) => value.message);
+    error = new ErrorResponse(message, 400);
+  }
+
+  //   After the logic in conditionals has been executed, code below responds with the right status
   // Getting error from errorResponse class or default it to 500
   res.status(error.statusCode || 500).json({
     success: false,
