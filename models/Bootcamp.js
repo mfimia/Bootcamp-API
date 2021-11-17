@@ -1,4 +1,4 @@
-// import { config } from "dotenv";  
+// import { config } from "dotenv";
 import mongoose from "mongoose";
 // Slug is a technical word that means to convert a name into an usable URL
 // Example: slugify(Martin Fimia) = martin-fimia
@@ -119,10 +119,15 @@ BootcampSchema.pre("save", function (next) {
 // Geocode & create location field
 // Syntax and keyworkds taken from MapQuest documentation
 // Only required fields for location, according to our Schema, are "type" and "coordinates"
+// By saying .pre(), we tell the program that this will run before it goes "save"
 BootcampSchema.pre("save", async function (next) {
+  // We await response from geocoder and store data in loc variable
   const loc = await geocoder.geocode(this.address);
+  //   This code below basically gets all the information from our geocoder and stores it in this object with below format
   this.location = {
+    // Required
     type: "Point",
+    // Required
     coordinates: [loc[0].longitude, loc[0].latitude],
     formattedAddress: loc[0].formattedAddress,
     street: loc[0].streetName,

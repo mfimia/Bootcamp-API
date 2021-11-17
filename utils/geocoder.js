@@ -1,6 +1,8 @@
 import NodeGeocoder from "node-geocoder";
 // import { config } from "dotenv";
 
+// We use mapquest as our geocoder provider
+// Api key below taken from the account created at developer.mapquest.com
 const options = {
   provider: "mapquest",
   //   provider: process.env.GEOCODER_PROVIDER,
