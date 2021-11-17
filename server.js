@@ -1,6 +1,8 @@
 import express from "express";
 import { config } from "dotenv";
+// Helper package to log colors into the console
 import colors from "colors";
+import errorHandler from "./middleware/error.js";
 // Deprecated custom logger function
 import logger from "./middleware/logger.js";
 // Lightweight middleware application installed
@@ -28,6 +30,7 @@ app.use(express.json());
 // Deprecated middleware custom logger function
 // app.use(logger);
 
+// All middleware we need to bring to the server by using app.use()
 // Dev logging middleware
 // Adding some logic so this will only run will in dev mode
 if (process.env.NODE_ENV === "development") {
@@ -38,6 +41,8 @@ if (process.env.NODE_ENV === "development") {
 // When we declare this, we don't need to use the complete url in the bootcamp file, we can put only '/'
 app.use("/api/v1/bootcamps", bootcamps);
 
+app.use(errorHandler);
+
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(
@@ -46,7 +51,6 @@ const server = app.listen(
     `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
   )
 );
-
 
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {
