@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+// Slug is a technical word that means to convert a name into an usable URL
+// Example: slugify(Martin Fimia) = martin-fimia
+import slugify from "slugify";
 
 // This file is basically saying  what type of data is allowed and how
 const BootcampSchema = new mongoose.Schema({
@@ -99,6 +102,16 @@ const BootcampSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+// Create bootcamp slug from the name
+// We don't use arrow function because it handles scope differently and "this" keyword would have different meaning
+BootcampSchema.pre("save", function (next) {
+  // Code below sets the slug of item and "lower: true" makes sure its lowercase
+  // We can use "slugify" because we installed it and imported it
+  this.slug = slugify(this.name, { lower: true });
+  // We tell it to go to the next piece of middleware
+  next();
 });
 
 export default mongoose.model("Bootcamp", BootcampSchema);
