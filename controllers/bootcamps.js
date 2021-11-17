@@ -14,8 +14,10 @@ export const getBootcamps = async (req, res, next) => {
     res
       .status(200)
       .json({ success: true, count: bootcamps.length, data: bootcamps });
-  } catch (err) {}
-  res.status(400).json({ success: false });
+    // Rejection (error) handled by error handler middleware (imported on ErrorResponse)
+  } catch (err) {
+    next(err);
+  }
 };
 
 // @desc    Get single bootcamp
@@ -30,15 +32,14 @@ export const getBootcamp = async (req, res, next) => {
     if (!bootcamp) {
       // Adding return keyworkd to make sure function stops here
       return next(
-        new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
+        new ErrorResponse(`Resource not found with id of ${req.params.id}`, 404)
       );
     }
     res.status(200).json({ success: true, data: bootcamp });
+    // Rejection (error) handled by error handler middleware (imported on ErrorResponse)
   } catch (err) {
     // Non formatted id
-    next(
-      new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
-    );
+    next(err);
   }
 };
 
@@ -53,8 +54,9 @@ export const createBootcamp = async (req, res, next) => {
       success: true,
       data: bootcamp,
     });
+    // Rejection (error) handled by error handler middleware (imported on ErrorResponse)
   } catch (err) {
-    res.status(400).json({ success: false });
+    next(err);
   }
   // This mongoose method below takes the body of the request and creates a new Bootcamp in our model
 };
@@ -72,13 +74,16 @@ export const updateBootcamp = async (req, res, next) => {
 
     // If the bootcamp doesn't exist, we send a 400 response
     if (!bootcamp) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(`Resource not found with id of ${req.params.id}`, 404)
+      );
     }
     console.log(bootcamp);
     // If the bootcamp does exist, we send a 200 response with the updated data
     res.status(200).json({ success: true, data: bootcamp });
+    // Rejection (error) handled by error handler middleware (imported on ErrorResponse)
   } catch (err) {
-    res.status(400).json({ success: false });
+    next(err);
   }
 };
 
@@ -91,11 +96,14 @@ export const deleteBootcamp = async (req, res, next) => {
 
     // If the bootcamp doesn't exist, we send a 400 response
     if (!bootcamp) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(`Resource not found with id of ${req.params.id}`, 404)
+      );
     }
     // If the bootcamp does exist, we send a 200 response with the updated data
     res.status(200).json({ success: true, data: {} });
+    // Rejection (error) handled by error handler middleware (imported on ErrorResponse)
   } catch (err) {
-    res.status(400).json({ success: false });
+    next(err);
   }
 };
